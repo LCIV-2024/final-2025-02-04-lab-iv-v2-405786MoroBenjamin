@@ -1,20 +1,16 @@
 package ar.edu.utn.frc.tup.lciii.services;
 
-import ar.edu.utn.frc.tup.lciii.DTO.getDeviceDTO;
-import ar.edu.utn.frc.tup.lciii.DTO.getDeviceRestDto;
-import ar.edu.utn.frc.tup.lciii.DTO.postDeviceDTO;
+import ar.edu.utn.frc.tup.lciii.DTO.GetDeviceDTO;
+import ar.edu.utn.frc.tup.lciii.DTO.GetDeviceRestDto;
+import ar.edu.utn.frc.tup.lciii.DTO.PostDeviceDTO;
 import ar.edu.utn.frc.tup.lciii.model.Device;
-import ar.edu.utn.frc.tup.lciii.model.Telemetry;
 import ar.edu.utn.frc.tup.lciii.repositories.DeviceRepository;
-import ar.edu.utn.frc.tup.lciii.repositories.TelemetryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +20,7 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final RestTemplate restTemplate;
 
-    public getDeviceDTO saveDevice(postDeviceDTO deviceDTO) {
+    public GetDeviceDTO saveDevice(PostDeviceDTO deviceDTO) {
         if(validateDeviceHostname(deviceDTO.getHostname())) {
             throw new RuntimeException("Device hostname already exists");
         }
@@ -35,19 +31,19 @@ public class DeviceService {
         return deviceEntityToDto(device);
     }
 
-    public List<getDeviceDTO> getAllByType(String type) {
+    public List<GetDeviceDTO> getAllByType(String type) {
         List<Device> deviceList = deviceRepository.findAllByType(type);
         return deviceList.stream().map(this::deviceEntityToDto).toList();
     }
 
-    private List<postDeviceDTO> getAllByApi(){
+    private List<PostDeviceDTO> getAllByApi(){
 
-        getDeviceRestDto[] lstDevices = restTemplate.getForObject("https://67a106a15bcfff4fabe171b0.mockapi.io/api/v1/device/device", getDeviceRestDto[].class);
+        GetDeviceRestDto[] lstDevices = restTemplate.getForObject("https://67a106a15bcfff4fabe171b0.mockapi.io/api/v1/device/device", GetDeviceRestDto[].class);
 
         // mapear el dto a post dto
-        List<postDeviceDTO> lstPost = new ArrayList<>();
-        for(getDeviceRestDto getDeviceRestDto : lstDevices){
-            postDeviceDTO dto = new postDeviceDTO();
+        List<PostDeviceDTO> lstPost = new ArrayList<>();
+        for(GetDeviceRestDto getDeviceRestDto : lstDevices){
+            PostDeviceDTO dto = new PostDeviceDTO();
             dto.setHostname(getDeviceRestDto.getHostName());
             dto.setType(getDeviceRestDto.getType());
             dto.setOs(getDeviceRestDto.getOs());
@@ -58,13 +54,13 @@ public class DeviceService {
         return lstPost;
     }
 
-    public List<getDeviceDTO> saveHalfForApi(){
+    public List<GetDeviceDTO> saveHalfForApi(){
         // Mezclar la lista
-        List<postDeviceDTO> lstPost = getAllByApi();
+        List<PostDeviceDTO> lstPost = getAllByApi();
         Collections.shuffle(lstPost);
 
         // Quitar la mitad
-        List<postDeviceDTO> lstPostHalf = lstPost.subList(0, lstPost.size()/2);
+        List<PostDeviceDTO> lstPostHalf = lstPost.subList(0, lstPost.size()/2);
 
         List<Device> lstDevice = lstPostHalf.stream().map(this::deviceDtoToDeviceEntity).toList();
 
@@ -78,8 +74,8 @@ public class DeviceService {
         return lstDevice.stream().map(this::deviceEntityToDto).toList();
     }
 
-    private postDeviceDTO deviceRestDtoToDeviceDto(getDeviceRestDto getDeviceRestDto) {
-        return postDeviceDTO.builder()
+    private PostDeviceDTO deviceRestDtoToDeviceDto(GetDeviceRestDto getDeviceRestDto) {
+        return PostDeviceDTO.builder()
                 .hostname(getDeviceRestDto.getHostName())
                 .type(getDeviceRestDto.getType())
                 .os(getDeviceRestDto.getOs())
@@ -103,7 +99,7 @@ public class DeviceService {
         return deviceRepository.existsById(hostname);
     }
 
-    private Device deviceDtoToDeviceEntity(postDeviceDTO deviceDTO) {
+    private Device deviceDtoToDeviceEntity(PostDeviceDTO deviceDTO) {
         return Device.builder()
                 .hostName(deviceDTO.getHostname())
                 .type(deviceDTO.getType())
@@ -112,8 +108,8 @@ public class DeviceService {
                 .build();
     }
 
-    private getDeviceDTO deviceEntityToDto(Device device) {
-        return getDeviceDTO.builder()
+    private GetDeviceDTO deviceEntityToDto(Device device) {
+        return GetDeviceDTO.builder()
                 .hostname(device.getHostName())
                 .type(device.getType())
                 .os(device.getOs())

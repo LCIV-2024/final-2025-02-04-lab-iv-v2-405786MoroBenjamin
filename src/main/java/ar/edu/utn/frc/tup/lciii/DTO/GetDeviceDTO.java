@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class getDeviceDTO {
+public class GetDeviceDTO {
     private String hostname;
     private String type;
     private String os;

@@ -1,13 +1,11 @@
 package ar.edu.utn.frc.tup.lciii.services;
 
-import ar.edu.utn.frc.tup.lciii.DTO.getTelemetryDTO;
-import ar.edu.utn.frc.tup.lciii.DTO.postTelemetryDTO;
-import ar.edu.utn.frc.tup.lciii.model.Device;
+import ar.edu.utn.frc.tup.lciii.DTO.GetTelemetryDTO;
+import ar.edu.utn.frc.tup.lciii.DTO.PostTelemetryDTO;
 import ar.edu.utn.frc.tup.lciii.model.Telemetry;
 import ar.edu.utn.frc.tup.lciii.repositories.DeviceRepository;
 import ar.edu.utn.frc.tup.lciii.repositories.TelemetryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +16,7 @@ public class TelemetryService {
     private final DeviceRepository deviceRepository;
     private final TelemetryRepository telemetryRepository;
 
-    public getTelemetryDTO saveTelemetry(postTelemetryDTO telemetryDTO) {
+    public GetTelemetryDTO saveTelemetry(PostTelemetryDTO telemetryDTO) {
         if(!validateDevice(telemetryDTO.getHostname())) {
             throw new RuntimeException("Device not found");
         }
@@ -29,21 +27,21 @@ public class TelemetryService {
     }
 
 
-    public List<getTelemetryDTO> getAllTelemertry() {
+    public List<GetTelemetryDTO> getAllTelemertry() {
         List<Telemetry> telemetryList = telemetryRepository.findAll();
         return telemetryList.stream().map(this::dtoToTelemetryEntity).toList();
     }
 
-    public List<getTelemetryDTO> getAllTelemertryByHostname(String hostname) {
+    public List<GetTelemetryDTO> getAllTelemertryByHostname(String hostname) {
         List<Telemetry> telemetryList = telemetryRepository.findAllByDeviceHostName(hostname);
         return telemetryList.stream().map(this::dtoToTelemetryEntity).toList();
     }
 
-    private boolean validateDevice(String hostname) {
+    public boolean validateDevice(String hostname) {
         return deviceRepository.existsById(hostname);
     }
 
-    private Telemetry telemetryDtoToEntity(postTelemetryDTO telemetryDTO) {
+    public Telemetry telemetryDtoToEntity(PostTelemetryDTO telemetryDTO) {
         return Telemetry.builder()
                 .ip(telemetryDTO.getIp())
                 .hostname(telemetryDTO.getHostname())
@@ -58,8 +56,8 @@ public class TelemetryService {
     }
 
 
-    private getTelemetryDTO dtoToTelemetryEntity(Telemetry telemetry) {
-        return getTelemetryDTO.builder()
+    public GetTelemetryDTO dtoToTelemetryEntity(Telemetry telemetry) {
+        return GetTelemetryDTO.builder()
                 .id(telemetry.getId())
                 .ip(telemetry.getIp())
                 .hostname(telemetry.getHostname())

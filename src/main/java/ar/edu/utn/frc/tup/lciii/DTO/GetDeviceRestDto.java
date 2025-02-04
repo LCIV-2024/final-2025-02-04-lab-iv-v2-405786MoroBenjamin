@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class postDeviceDTO {
-    private String hostname;
+public class GetDeviceRestDto {
+    private String id;
+    private String hostName;
     private String type;
     private String os;
     private String macAddress;
+    private String createdDate;
 }
