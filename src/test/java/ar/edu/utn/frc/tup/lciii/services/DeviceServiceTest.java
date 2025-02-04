@@ -19,4 +19,36 @@ class DeviceServiceTest {
     @Test
     void saveHalfForApi() {
     }
+
+    @Test
+    void testSaveDevice() {
+    }
+
+    @Test
+    void testGetAllByType() {
+    }
+
+    @Test
+    void getAllByApi() {
+    }
+
+    @Test
+    void testSaveHalfForApi() {
+    }
+
+    @Test
+    void deviceRestDtoToDeviceDto() {
+    }
+
+    @Test
+    void validateDeviceHostname() {
+    }
+
+    @Test
+    void deviceDtoToDeviceEntity() {
+    }
+
+    @Test
+    void deviceEntityToDto() {
+    }
 }

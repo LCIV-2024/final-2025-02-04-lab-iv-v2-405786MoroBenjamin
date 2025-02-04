@@ -36,7 +36,7 @@ public class DeviceService {
         return deviceList.stream().map(this::deviceEntityToDto).toList();
     }
 
-    private List<PostDeviceDTO> getAllByApi(){
+    public List<PostDeviceDTO> getAllByApi(){
 
         GetDeviceRestDto[] lstDevices = restTemplate.getForObject("https://67a106a15bcfff4fabe171b0.mockapi.io/api/v1/device/device", GetDeviceRestDto[].class);
 
@@ -74,7 +74,7 @@ public class DeviceService {
         return lstDevice.stream().map(this::deviceEntityToDto).toList();
     }
 
-    private PostDeviceDTO deviceRestDtoToDeviceDto(GetDeviceRestDto getDeviceRestDto) {
+    public PostDeviceDTO deviceRestDtoToDeviceDto(GetDeviceRestDto getDeviceRestDto) {
         return PostDeviceDTO.builder()
                 .hostname(getDeviceRestDto.getHostName())
                 .type(getDeviceRestDto.getType())
@@ -95,11 +95,11 @@ public class DeviceService {
 //        return ltsDevice.stream().map(this::deviceEntityToDto).toList();
 //    }
 
-    private boolean validateDeviceHostname(String hostname) {
+    public boolean validateDeviceHostname(String hostname) {
         return deviceRepository.existsById(hostname);
     }
 
-    private Device deviceDtoToDeviceEntity(PostDeviceDTO deviceDTO) {
+    public Device deviceDtoToDeviceEntity(PostDeviceDTO deviceDTO) {
         return Device.builder()
                 .hostName(deviceDTO.getHostname())
                 .type(deviceDTO.getType())
@@ -108,7 +108,7 @@ public class DeviceService {
                 .build();
     }
 
-    private GetDeviceDTO deviceEntityToDto(Device device) {
+    public GetDeviceDTO deviceEntityToDto(Device device) {
         return GetDeviceDTO.builder()
                 .hostname(device.getHostName())
                 .type(device.getType())
