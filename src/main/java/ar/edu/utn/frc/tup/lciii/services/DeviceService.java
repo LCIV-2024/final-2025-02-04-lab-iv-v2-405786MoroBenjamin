@@ -48,7 +48,7 @@ public class DeviceService {
         List<postDeviceDTO> lstPost = new ArrayList<>();
         for(getDeviceRestDto getDeviceRestDto : lstDevices){
             postDeviceDTO dto = new postDeviceDTO();
-            dto.setHostname(getDeviceRestDto.getHostname());
+            dto.setHostname(getDeviceRestDto.getHostName());
             dto.setType(getDeviceRestDto.getType());
             dto.setOs(getDeviceRestDto.getOs());
             dto.setMacAddress(getDeviceRestDto.getMacAddress());
@@ -80,7 +80,7 @@ public class DeviceService {
 
     private postDeviceDTO deviceRestDtoToDeviceDto(getDeviceRestDto getDeviceRestDto) {
         return postDeviceDTO.builder()
-                .hostname(getDeviceRestDto.getHostname())
+                .hostname(getDeviceRestDto.getHostName())
                 .type(getDeviceRestDto.getType())
                 .os(getDeviceRestDto.getOs())
                 .macAddress(getDeviceRestDto.getMacAddress())

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class getDeviceRestDto {
     private String id;
-    private String hostname;
+    private String hostName;
     private String type;
     private String os;
     private String macAddress;
