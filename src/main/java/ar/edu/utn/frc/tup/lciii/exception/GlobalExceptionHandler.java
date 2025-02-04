@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorApi> handleGenericException(Exception ex) {
         ErrorApi errorApi = ErrorApi.builder()
                 .timestamp(LocalDateTime.now().toString())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .status(Integer.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .message("An unexpected error occurred")
                 .build();

@@ -13,7 +13,7 @@ public class ErrorApi {
 
     private String timestamp;
 
-    private Integer status;
+    private int status;
 
     private String error;
 
